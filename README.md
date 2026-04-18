@@ -12,12 +12,12 @@ Co-branded for Dream Planners Group × Great Eastern Life.
 
 ```
 mum-tool/
-├── index.html        ← The app itself
-├── manifest.json     ← PWA config (makes it installable on iPad)
-├── icon-192.png      ← App icon (iPad home screen)
-├── icon-512.png      ← App icon (larger, for splash screen)
-├── dp-logo-full.png  ← Dream Planners full logo (mark + wordmark)
-├── dp-mark.png       ← Dream Planners mark only (transparent PNG)
+├── mum-tool/index.html        ← The app itself
+├── mum-tool/manifest.json     ← PWA config (makes it installable on iPad)
+├── mum-tool/icon-192.png      ← App icon (iPad home screen)
+├── mum-tool/icon-512.png      ← App icon (larger, for splash screen)
+├── mum-tool/dp-logo-full.png  ← Dream Planners full logo (mark + wordmark)
+├── mum-tool/dp-mark.png       ← Dream Planners mark only (transparent PNG)
 └── README.md         ← This file
 ```
 
