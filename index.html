@@ -1,0 +1,2129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DPG Mum Engagement Tool — Great Eastern</title>
+
+<!-- PWA / iPad Home Screen -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#C8102E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DPG Mum">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ge-red: #C8102E;
+    --ge-red-deep: #9E0B24;
+    --ge-navy: #1F2E7A;
+    --dp-navy: #1E3DAF;
+    --dp-navy-deep: #14287A;
+    --dp-gold: #C89B5C;
+    --dp-gold-soft: #E8D5B3;
+    --blush: #FDF6F2;
+    --blush-deep: #F9E6DC;
+    --coral: #F28B7C;
+    --coral-soft: #FFD4CA;
+    --cream: #FFFBF7;
+    --ink: #2B1A1F;
+    --ink-soft: #6B5560;
+    --mint: #7FB89E;
+    --gold: #C9A961;
+    --border: rgba(43, 26, 31, 0.1);
+    --shadow-sm: 0 2px 8px rgba(43, 26, 31, 0.06);
+    --shadow-md: 0 8px 24px rgba(43, 26, 31, 0.08);
+    --shadow-lg: 0 20px 60px rgba(43, 26, 31, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Manrope', -apple-system, sans-serif;
+    background: var(--blush);
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .serif { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; }
+
+  /* ========== APP SHELL ========== */
+  .app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-logo {
+    height: 34px;
+    width: auto;
+    display: block;
+  }
+
+  .brand-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+  .brand-text strong {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dp-navy-deep);
+    letter-spacing: -0.01em;
+  }
+  .brand-text small {
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  @media (max-width: 560px) {
+    .brand-logo { height: 28px; }
+    .brand-text strong { font-size: 14px; }
+    .brand-text small { font-size: 9.5px; }
+  }
+
+  .topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+  .btn {
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: var(--cream); border-color: var(--ink-soft); }
+  .btn-primary { background: var(--ge-red); color: white; }
+  .btn-primary:hover { background: var(--ge-red-deep); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .btn-navy { background: var(--ge-navy); color: white; }
+  .btn-navy:hover { background: #19246A; transform: translateY(-1px); }
+  .btn-lg { padding: 14px 28px; font-size: 15px; }
+
+  /* ========== PROGRESS ========== */
+  .progress-wrap {
+    background: white;
+    padding: 18px 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .progress-steps {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+    gap: 8px;
+  }
+  .step {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 8px 4px;
+    border-radius: 12px;
+  }
+  .step:hover { background: var(--blush); }
+  .step-num {
+    width: 32px; height: 32px;
+    margin: 0 auto 6px;
+    border-radius: 50%;
+    background: var(--blush-deep);
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    font-family: 'Fraunces', serif;
+  }
+  .step.active .step-num {
+    background: var(--ge-red);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(200, 16, 46, 0.3);
+  }
+  .step.done .step-num {
+    background: var(--mint);
+    color: white;
+  }
+  .step-label {
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .step.active .step-label { color: var(--ge-red); font-weight: 700; }
+
+  /* ========== CONTENT ========== */
+  main {
+    flex: 1;
+    padding: 32px 28px 80px;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .screen { display: none; animation: fadeUp 0.4s ease; }
+  .screen.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .screen-header { margin-bottom: 28px; }
+  .eyebrow {
+    display: inline-block;
+    background: var(--coral-soft);
+    color: var(--ge-red-deep);
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  h1.screen-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+  }
+  h1.screen-title em {
+    font-style: italic;
+    color: var(--ge-red);
+    font-weight: 400;
+  }
+  .screen-sub {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 640px;
+  }
+
+  /* ========== CARDS ========== */
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    margin-bottom: 18px;
+  }
+  .card-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ge-navy);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .card-sub {
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  /* ========== FORM ========== */
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 720px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .field input, .field select, .field textarea {
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: white;
+    transition: all 0.2s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--ge-red);
+    box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.1);
+  }
+
+  .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    padding: 10px 18px;
+    border: 1.5px solid var(--border);
+    background: white;
+    border-radius: 999px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .chip:hover { border-color: var(--coral); }
+  .chip.selected {
+    background: var(--ge-red);
+    color: white;
+    border-color: var(--ge-red);
+    box-shadow: 0 4px 12px rgba(200, 16, 46, 0.25);
+  }
+
+  /* ========== NEEDS DISCOVERY ========== */
+  .concern-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: var(--blush);
+    border-radius: 14px;
+    margin-bottom: 10px;
+    gap: 16px;
+  }
+  .concern-row .q {
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 500;
+    flex: 1;
+  }
+  .scale {
+    display: flex;
+    gap: 6px;
+  }
+  .scale button {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .scale button:hover { border-color: var(--coral); }
+  .scale button.picked {
+    background: var(--ge-red);
+    color: white;
+    border-color: var(--ge-red);
+    transform: scale(1.1);
+  }
+
+  /* ========== GMC2 QUOTE ========== */
+  .plan-switcher {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 560px) { .plan-switcher { grid-template-columns: 1fr; } }
+
+  .plan-card {
+    padding: 22px;
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  .plan-card:hover { border-color: var(--coral); transform: translateY(-2px); }
+  .plan-card.active {
+    border-color: var(--ge-red);
+    background: linear-gradient(135deg, #FFF8F4 0%, #FDF0EA 100%);
+    box-shadow: 0 10px 30px rgba(200, 16, 46, 0.15);
+  }
+  .plan-card.active::before {
+    content: "✓";
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--ge-red);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .plan-tier { font-size: 11px; color: var(--ink-soft); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; }
+  .plan-sa {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 4px 0 2px;
+  }
+  .plan-sa small { font-size: 14px; font-weight: 400; color: var(--ink-soft); }
+  .plan-prem {
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .plan-prem strong { color: var(--ge-red); font-size: 15px; font-weight: 700; }
+
+  .benefit-split {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 16px;
+  }
+  @media (max-width: 720px) { .benefit-split { grid-template-columns: 1fr; } }
+
+  .benefit-col h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ge-navy);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--coral-soft);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .benefit-col h4::before {
+    content: "";
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--ge-red);
+  }
+
+  .benefit-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 14px;
+    gap: 12px;
+  }
+  .benefit-line:last-child { border-bottom: none; }
+  .benefit-line span:first-child { color: var(--ink-soft); flex: 1; }
+  .benefit-line span:last-child { color: var(--ink); font-weight: 600; text-align: right; white-space: nowrap; }
+
+  /* ========== COMPARE ========== */
+  .vs-wrap {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 720px) { .vs-wrap { grid-template-columns: 1fr; } .vs-divider { display: none; } }
+
+  .vs-card {
+    padding: 24px;
+    border-radius: 18px;
+    border: 2px solid var(--border);
+  }
+  .vs-card.winner {
+    background: linear-gradient(160deg, #FFF8F4 0%, white 70%);
+    border-color: var(--ge-red);
+    position: relative;
+  }
+  .vs-card.winner::after {
+    content: "GE ADVANTAGE";
+    position: absolute;
+    top: -11px; left: 20px;
+    background: var(--ge-red);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+  .vs-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-style: italic;
+    color: var(--coral);
+  }
+  .vs-title {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .vs-sub { font-size: 12px; color: var(--ink-soft); margin-bottom: 16px; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
+  .vs-list { list-style: none; }
+  .vs-list li {
+    padding: 8px 0 8px 26px;
+    position: relative;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .vs-list li::before {
+    position: absolute;
+    left: 0; top: 8px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .vs-list.good li::before { content: "✓"; background: var(--mint); color: white; }
+  .vs-list.bad li::before { content: "!"; background: #E8A87C; color: white; }
+
+  /* ========== EDUCATION CALC ========== */
+  .edu-controls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 720px) { .edu-controls { grid-template-columns: 1fr; } }
+
+  .slider-field label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+  .slider-field label span:last-child {
+    color: var(--ge-red);
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .slider-field input[type="range"] {
+    width: 100%;
+    appearance: none;
+    height: 6px;
+    background: var(--blush-deep);
+    border-radius: 999px;
+    outline: none;
+  }
+  .slider-field input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 22px; height: 22px;
+    background: var(--ge-red);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(200, 16, 46, 0.35);
+    transition: transform 0.15s;
+  }
+  .slider-field input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+  .slider-field input[type="range"]::-moz-range-thumb {
+    width: 22px; height: 22px;
+    background: var(--ge-red);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+  }
+
+  .edu-result {
+    background: linear-gradient(135deg, var(--ge-navy) 0%, #2A3A95 100%);
+    color: white;
+    padding: 28px;
+    border-radius: 18px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .edu-result::before {
+    content: "";
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+    border-radius: 50%;
+  }
+  .edu-label { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.8; margin-bottom: 8px; font-weight: 600; }
+  .edu-amount {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .edu-amount small { font-size: 20px; opacity: 0.7; font-weight: 400; }
+  .edu-hint { font-size: 14px; opacity: 0.85; line-height: 1.5; }
+
+  .edu-breakdown {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 560px) { .edu-breakdown { grid-template-columns: 1fr; } }
+
+  .edu-stat {
+    background: white;
+    padding: 16px 18px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+  }
+  .edu-stat-label { font-size: 11px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+  .edu-stat-value {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ge-navy);
+    margin-top: 4px;
+  }
+
+  /* ========== SCRIPTS ========== */
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--blush-deep);
+    padding: 4px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  .tab-btn.active {
+    background: white;
+    color: var(--ge-red);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .script-pane { display: none; }
+  .script-pane.active { display: block; animation: fadeUp 0.3s ease; }
+
+  .script-block {
+    background: var(--cream);
+    border-left: 3px solid var(--ge-red);
+    padding: 18px 22px;
+    border-radius: 4px 14px 14px 4px;
+    margin-bottom: 14px;
+  }
+  .script-block h5 {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ge-red);
+    margin-bottom: 8px;
+  }
+  .script-block p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .script-block p em {
+    background: var(--coral-soft);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .objection {
+    background: white;
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .objection:hover { border-color: var(--coral); box-shadow: var(--shadow-sm); }
+  .objection summary {
+    cursor: pointer;
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ge-navy);
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .objection summary::after {
+    content: "+";
+    font-size: 24px;
+    color: var(--ge-red);
+    font-weight: 300;
+    transition: transform 0.2s;
+  }
+  .objection[open] summary::after { transform: rotate(45deg); }
+  .objection summary::-webkit-details-marker { display: none; }
+  .objection-body {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .objection-body strong { color: var(--ge-red); }
+
+  /* ========== NAV FOOTER ========== */
+  .nav-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 32px;
+    gap: 12px;
+  }
+
+  /* ========== PRINT SUMMARY ========== */
+  .summary-wrap {
+    background: white;
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+  }
+  .summary-brand-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sum-dp-logo { height: 38px; width: auto; }
+  .sum-brand-divider {
+    width: 1px;
+    height: 30px;
+    background: var(--border);
+  }
+  .sum-brand-text { display: flex; flex-direction: column; }
+  .sum-brand-kicker {
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .sum-brand-ge {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ge-red);
+    letter-spacing: -0.005em;
+  }
+  .summary-header {
+    border-bottom: 3px solid var(--ge-red);
+    padding-bottom: 18px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .summary-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--ge-navy);
+    letter-spacing: -0.01em;
+  }
+  .summary-header .meta {
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: right;
+  }
+
+  .sum-section { margin-bottom: 28px; }
+  .sum-section h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ge-red);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .sum-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+  }
+  .sum-item {
+    padding: 14px 18px;
+    background: var(--blush);
+    border-radius: 12px;
+  }
+  .sum-item-label { font-size: 11px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 4px; }
+  .sum-item-value { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; color: var(--ink); }
+
+  /* ========== DAD GAP METER ========== */
+  .dad-card {
+    background: linear-gradient(160deg, #EEF1FA 0%, #F8FAFF 100%);
+    border: 1px solid rgba(31, 46, 122, 0.12);
+  }
+  .dad-card .card-title { color: var(--ge-navy); }
+  .dad-card .card-title::before {
+    content: "👨‍👧";
+    margin-right: 8px;
+    font-size: 20px;
+  }
+  .gap-meter {
+    margin-top: 18px;
+    padding: 20px 22px;
+    background: white;
+    border-radius: 16px;
+    border: 1.5px solid var(--border);
+  }
+  .gap-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .gap-label-text {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+  .gap-score {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .gap-bar {
+    height: 10px;
+    background: var(--blush-deep);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+  .gap-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.5s ease, background 0.5s ease;
+    background: linear-gradient(90deg, var(--mint), #E8A87C, var(--ge-red));
+    width: 0%;
+  }
+  .gap-verdict {
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.55;
+    font-weight: 500;
+    display: none;
+  }
+  .gap-verdict.show { display: block; }
+  .gap-verdict.good { background: rgba(127, 184, 158, 0.15); color: #2D6B4E; border-left: 3px solid var(--mint); }
+  .gap-verdict.warn { background: rgba(232, 168, 124, 0.18); color: #8B4513; border-left: 3px solid #E8A87C; }
+  .gap-verdict.risk { background: rgba(200, 16, 46, 0.08); color: var(--ge-red-deep); border-left: 3px solid var(--ge-red); }
+
+  .agent-card {
+    background: linear-gradient(135deg, var(--ge-red) 0%, var(--ge-red-deep) 100%);
+    color: white;
+    padding: 24px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .agent-card h4 { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; margin-bottom: 4px; }
+  .agent-card p { font-size: 14px; opacity: 0.9; }
+  .agent-qr {
+    width: 72px; height: 72px;
+    background: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: var(--ink-soft);
+    text-align: center;
+    padding: 8px;
+  }
+
+  /* ========== WELCOME / INTRO ========== */
+  .intro-hero {
+    background: linear-gradient(160deg, #FFF4EE 0%, var(--blush) 60%, #FFE8DD 100%);
+    border-radius: 28px;
+    padding: 50px 40px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .intro-hero::before {
+    content: "";
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 240px; height: 240px;
+    background: radial-gradient(circle, var(--coral-soft), transparent 70%);
+    border-radius: 50%;
+    opacity: 0.7;
+  }
+  .intro-hero::after {
+    content: "";
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(200,16,46,0.08), transparent 70%);
+    border-radius: 50%;
+  }
+  .intro-hero-inner { position: relative; z-index: 1; max-width: 720px; }
+  .intro-hero h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(38px, 5vw, 54px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .intro-hero h2 em {
+    font-style: italic;
+    color: var(--ge-red);
+  }
+  .intro-hero p {
+    font-size: 17px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 24px;
+  }
+
+  .trust-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 640px) { .trust-row { grid-template-columns: 1fr; } }
+
+  .trust-stat {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+  .trust-stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 500;
+    background: linear-gradient(135deg, var(--dp-gold) 0%, #B08040 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .trust-stat-label {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* ========== PRINT ========== */
+  @media print {
+    body { background: white; }
+    .topbar, .progress-wrap, .nav-footer, .no-print { display: none !important; }
+    main { padding: 0; max-width: none; }
+    .summary-wrap { box-shadow: none; padding: 0; }
+    .screen { display: block !important; page-break-inside: avoid; }
+    .screen:not(#screen-summary) { display: none !important; }
+    .agent-card { background: var(--ge-red) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .sum-item { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  /* utilities */
+  .center { text-align: center; }
+  .mt-2 { margin-top: 16px; }
+  .mt-3 { margin-top: 24px; }
+  .hint {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+    padding: 10px 14px;
+    background: var(--blush);
+    border-radius: 10px;
+    border-left: 3px solid var(--coral);
+    margin-top: 8px;
+  }
+
+  .pill-trust {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ge-navy);
+    border: 1px solid var(--border);
+    margin-right: 6px;
+    margin-bottom: 6px;
+  }
+  .pill-trust::before {
+    content: "";
+    width: 8px; height: 8px;
+    background: var(--mint);
+    border-radius: 50%;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============ TOPBAR ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <img src="dp-logo-full.png" alt="Dream Planners Group" class="brand-logo">
+      <div class="brand-divider"></div>
+      <div class="brand-text">
+        <strong>Mum Engagement Tool</strong>
+        <small>Dream Planners × Great Eastern</small>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost no-print" onclick="resetApp()">↺ Restart</button>
+      <button class="btn btn-primary no-print" id="topCta" onclick="goToStep(5)">Summary</button>
+    </div>
+  </header>
+
+  <!-- ============ PROGRESS ============ -->
+  <div class="progress-wrap no-print">
+    <div class="progress-steps" id="stepsNav">
+      <div class="step active" data-step="1" onclick="goToStep(1)">
+        <div class="step-num">1</div>
+        <div class="step-label">Welcome</div>
+      </div>
+      <div class="step" data-step="2" onclick="goToStep(2)">
+        <div class="step-num">2</div>
+        <div class="step-label">Discovery</div>
+      </div>
+      <div class="step" data-step="3" onclick="goToStep(3)">
+        <div class="step-num">3</div>
+        <div class="step-label">Maternity Plan</div>
+      </div>
+      <div class="step" data-step="4" onclick="goToStep(4)">
+        <div class="step-num">4</div>
+        <div class="step-label">Education</div>
+      </div>
+      <div class="step" data-step="5" onclick="goToStep(5)">
+        <div class="step-num">5</div>
+        <div class="step-label">Scripts</div>
+      </div>
+      <div class="step" data-step="6" onclick="goToStep(6)">
+        <div class="step-num">6</div>
+        <div class="step-label">Summary</div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ==================== STEP 1: WELCOME ==================== -->
+    <section class="screen active" id="screen-1">
+      <div class="intro-hero">
+        <div class="intro-hero-inner">
+          <span class="eyebrow">Supermom 2026 × GREAT Bundle of Joy</span>
+          <h2>Every <em>little one</em><br>deserves a <em>great</em> start.</h2>
+          <p>Hello mummy — congratulations on this beautiful new chapter. Before we go through your gift box, let's take 15 minutes to map out the protection and education plan your family deserves. No pressure, no jargon — just a conversation.</p>
+          <button class="btn btn-primary btn-lg" onclick="goToStep(2)">Let's begin →</button>
+        </div>
+      </div>
+
+      <div class="trust-row">
+        <div class="trust-stat">
+          <div class="trust-stat-num">1908</div>
+          <div class="trust-stat-label">Serving S'pore families since</div>
+        </div>
+        <div class="trust-stat">
+          <div class="trust-stat-num">#1</div>
+          <div class="trust-stat-label">Standalone maternity in SG</div>
+        </div>
+        <div class="trust-stat">
+          <div class="trust-stat-num">2024</div>
+          <div class="trust-stat-label">ParentsWorld Best Comprehensive Maternity</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Agent starter details</div>
+        <div class="card-sub">Enter once — auto-fills across summary and leave-behind.</div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Mum's name</label>
+            <input type="text" id="mumName" placeholder="e.g. Sarah Tan" oninput="saveState()">
+          </div>
+          <div class="field">
+            <label>Expected due date (or baby's DOB)</label>
+            <input type="date" id="dueDate" oninput="saveState()">
+          </div>
+          <div class="field">
+            <label>Agent name</label>
+            <input type="text" id="agentName" placeholder="e.g. Jason Ng" value="Jason Ng" oninput="saveState()">
+          </div>
+          <div class="field">
+            <label>Rep No. (MAS registered)</label>
+            <input type="text" id="agentRep" placeholder="e.g. 1220629" value="1220629" oninput="saveState()">
+          </div>
+        </div>
+        <div class="hint">💡 <strong>MAS compliance:</strong> Introduce yourself upfront as representing Great Eastern Life / Great Eastern Financial Advisers. No selling — arrange sharing session only, per GE do's & don'ts.</div>
+      </div>
+    </section>
+
+    <!-- ==================== STEP 2: NEEDS DISCOVERY ==================== -->
+    <section class="screen" id="screen-2">
+      <div class="screen-header">
+        <span class="eyebrow">Step 2 · Needs Discovery</span>
+        <h1 class="screen-title">What's on your <em>heart</em> right now?</h1>
+        <p class="screen-sub">There's no wrong answer. Rate each concern from 1 (not worried) to 5 (top of mind). This helps us focus only on what matters to you.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">For you, mummy</div>
+        <div class="card-sub">Your wellbeing is the foundation. Let's check in.</div>
+
+        <div class="concern-row">
+          <div class="q">Pregnancy complications (diabetes, pre-eclampsia, C-section issues)</div>
+          <div class="scale" data-concern="c1"></div>
+        </div>
+        <div class="concern-row">
+          <div class="q">Hospital stay costs & loss of income during bed rest</div>
+          <div class="scale" data-concern="c2"></div>
+        </div>
+        <div class="concern-row">
+          <div class="q">Postpartum mental health support (consultations, counselling)</div>
+          <div class="scale" data-concern="c3"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">For your little one</div>
+        <div class="card-sub">From first breath to first day of school — and beyond.</div>
+
+        <div class="concern-row">
+          <div class="q">Congenital conditions at birth (heart, cleft, Down's, etc.)</div>
+          <div class="scale" data-concern="c4"></div>
+        </div>
+        <div class="concern-row">
+          <div class="q">NICU / ICU stays & incubation costs</div>
+          <div class="scale" data-concern="c5"></div>
+        </div>
+        <div class="concern-row">
+          <div class="q">Child's education — uni fees in 18+ years</div>
+          <div class="scale" data-concern="c6"></div>
+        </div>
+        <div class="concern-row">
+          <div class="q">Family legacy if something happens to a parent</div>
+          <div class="scale" data-concern="c7"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Quick context</div>
+        <div class="grid-3">
+          <div class="field">
+            <label>First baby?</label>
+            <div class="chip-group" data-single="firstBaby">
+              <button class="chip" data-val="yes">Yes</button>
+              <button class="chip" data-val="no">No</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Existing insurance with GE?</label>
+            <div class="chip-group" data-single="existingGE">
+              <button class="chip" data-val="yes">Yes</button>
+              <button class="chip" data-val="no">No</button>
+              <button class="chip" data-val="unsure">Not sure</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Conceived via assisted (IVF)?</label>
+            <div class="chip-group" data-single="ivf">
+              <button class="chip" data-val="no">No</button>
+              <button class="chip" data-val="yes">Yes</button>
+            </div>
+          </div>
+        </div>
+        <div class="grid-2 mt-2">
+          <div class="field">
+            <label>Twins / multiples?</label>
+            <div class="chip-group" data-single="twins">
+              <button class="chip" data-val="no">No (single)</button>
+              <button class="chip" data-val="yes">Yes (twins+)</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Mum's age next birthday</label>
+            <select id="mumAge" onchange="saveState(); updatePremium();">
+              <option value="28">18–30</option>
+              <option value="33">31–35</option>
+              <option value="37">36–39</option>
+              <option value="42">40–45</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card dad-card">
+        <div class="card-title">A quick check for dad</div>
+        <div class="card-sub">Mum is the life-giver. But dad is often the <strong>financial pillar</strong> — and most families have a bigger gap here than they realise. Four quick questions.</div>
+
+        <div class="concern-row">
+          <div class="q">If dad couldn't work tomorrow (injury, illness, CI) — how many months can your family survive on savings?</div>
+          <div class="chip-group" data-single="dad-runway" data-score="runway">
+            <button class="chip" data-val="3" data-pts="3">Less than 3 mo</button>
+            <button class="chip" data-val="6" data-pts="2">3–6 mo</button>
+            <button class="chip" data-val="12" data-pts="1">6–12 mo</button>
+            <button class="chip" data-val="24" data-pts="0">12+ mo</button>
+          </div>
+        </div>
+
+        <div class="concern-row">
+          <div class="q">Does dad have a <strong>term life / whole life</strong> plan covering at least 10× his annual income?</div>
+          <div class="chip-group" data-single="dad-life" data-score="life">
+            <button class="chip" data-val="yes" data-pts="0">Yes, 10×+</button>
+            <button class="chip" data-val="some" data-pts="1">Some, but &lt; 10×</button>
+            <button class="chip" data-val="no" data-pts="3">No life plan</button>
+            <button class="chip" data-val="unsure" data-pts="2">Not sure</button>
+          </div>
+        </div>
+
+        <div class="concern-row">
+          <div class="q">Does dad have <strong>Critical Illness</strong> cover? (pays lump sum on cancer, stroke, heart attack, etc.)</div>
+          <div class="chip-group" data-single="dad-ci" data-score="ci">
+            <button class="chip" data-val="yes" data-pts="0">Yes</button>
+            <button class="chip" data-val="employer" data-pts="2">Only employer cover</button>
+            <button class="chip" data-val="no" data-pts="3">No</button>
+            <button class="chip" data-val="unsure" data-pts="2">Not sure</button>
+          </div>
+        </div>
+
+        <div class="concern-row">
+          <div class="q">Housing loan / debt — if dad passes away, is it covered by <strong>MRTA or mortgage insurance</strong>?</div>
+          <div class="chip-group" data-single="dad-debt" data-score="debt">
+            <button class="chip" data-val="yes" data-pts="0">Yes, fully covered</button>
+            <button class="chip" data-val="partial" data-pts="1">Partially</button>
+            <button class="chip" data-val="no" data-pts="3">No</button>
+            <button class="chip" data-val="na" data-pts="0">No housing loan</button>
+          </div>
+        </div>
+
+        <div class="gap-meter">
+          <div class="gap-label">
+            <span class="gap-label-text">Family protection gap</span>
+            <span class="gap-score" id="gapScore">—</span>
+          </div>
+          <div class="gap-bar">
+            <div class="gap-bar-fill" id="gapFill"></div>
+          </div>
+          <div class="gap-verdict" id="gapVerdict"></div>
+        </div>
+
+        <div class="hint mt-2">
+          💬 <strong>Talk track:</strong> "Mummy, I know we're focused on you and baby today. But here's something most couples miss — when baby arrives, dad becomes the single point of failure for the whole household. If anything happens to him, baby's future depends on what's in place <em>today</em>. The good news? It's usually cheaper to fix this than mums expect."
+        </div>
+      </div>
+
+      <div class="nav-footer">
+        <button class="btn btn-ghost" onclick="goToStep(1)">← Back</button>
+        <button class="btn btn-primary" onclick="goToStep(3)">Show maternity plan →</button>
+      </div>
+    </section>
+
+    <!-- ==================== STEP 3: GMC2 QUOTE ==================== -->
+    <section class="screen" id="screen-3">
+      <div class="screen-header">
+        <span class="eyebrow">Step 3 · GREAT Maternity Care 2</span>
+        <h1 class="screen-title">The only <em>standalone</em> maternity plan in Singapore.</h1>
+        <p class="screen-sub">One single premium. Covers mum and baby for 44 conditions. Pay once, protected through pregnancy and up to baby's first years.</p>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <span class="pill-trust">Award-winning (ParentsWorld 2024)</span>
+        <span class="pill-trust">Single premium — pay once</span>
+        <span class="pill-trust">No bundled ILP needed</span>
+        <span class="pill-trust">Covers SG · MY · BN</span>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Pick your coverage tier</div>
+        <div class="card-sub">Premium updates automatically based on mum's age and conception type.</div>
+
+        <div class="plan-switcher">
+          <div class="plan-card active" id="plan-5k" onclick="selectPlan('5k')">
+            <div class="plan-tier">Essential</div>
+            <div class="plan-sa">$5,000 <small>sum assured</small></div>
+            <div class="plan-prem">Single premium · <strong id="prem5k">S$478</strong></div>
+          </div>
+          <div class="plan-card" id="plan-10k" onclick="selectPlan('10k')">
+            <div class="plan-tier">Comprehensive</div>
+            <div class="plan-sa">$10,000 <small>sum assured</small></div>
+            <div class="plan-prem">Single premium · <strong id="prem10k">S$860</strong></div>
+          </div>
+        </div>
+
+        <div class="benefit-split">
+          <div class="benefit-col">
+            <h4>For you, mummy</h4>
+            <div class="benefit-line"><span>Death / TPD benefit</span><span id="b-tpd">$5,000</span></div>
+            <div class="benefit-line"><span>18 pregnancy & childbirth complications</span><span id="b-preg">$5,000</span></div>
+            <div class="benefit-line"><span>Daily hospital care (up to 30 days)</span><span id="b-hosp-m">$100/day</span></div>
+            <div class="benefit-line"><span>Psychological consultations (3x)</span><span>$100/session</span></div>
+            <div class="benefit-line"><span>Mum Again benefit (next pregnancy)</span><span style="color:var(--mint);">✓ included</span></div>
+            <div class="benefit-line"><span>Guaranteed Insurability</span><span style="color:var(--mint);">✓ included</span></div>
+          </div>
+          <div class="benefit-col">
+            <h4>For baby</h4>
+            <div class="benefit-line"><span>Death benefit</span><span id="b-death-c">$5,000</span></div>
+            <div class="benefit-line"><span>26 congenital illnesses</span><span id="b-cong">$5,000</span></div>
+            <div class="benefit-line"><span>15 juvenile illnesses</span><span id="b-juv">$5,000</span></div>
+            <div class="benefit-line"><span>Daily hospital care (ICU, HFMD, etc.)</span><span id="b-hosp-c">$100/day</span></div>
+            <div class="benefit-line"><span>Major organ surgery (heart, lung, liver...)</span><span id="b-organ">$2,500</span></div>
+            <div class="benefit-line"><span>GIB — buy baby's future plan, no underwriting</span><span style="color:var(--mint);">✓ 90 days</span></div>
+          </div>
+        </div>
+
+        <div class="hint mt-2">
+          💬 <strong>Talk track:</strong> "Mummy, imagine paying $<span id="premTalk">478</span> once, and from the day you conceive right up to baby's 120th day, we cover 44 different medical events. If complications happen — and 1 in 5 SG pregnancies do — we pay out directly. That's peace of mind you can't replace."
+        </div>
+      </div>
+
+      <div class="nav-footer">
+        <button class="btn btn-ghost" onclick="goToStep(2)">← Back</button>
+        <button class="btn btn-primary" onclick="goToStep(4)">Compare with ILP riders →</button>
+      </div>
+    </section>
+
+    <!-- ==================== STEP 3.5: COMPARE (embedded in 3) ==================== -->
+    <section class="screen" id="screen-4">
+      <div class="screen-header">
+        <span class="eyebrow">Step 4 · The GE Advantage</span>
+        <h1 class="screen-title">Why GE is <em>different</em> — and why it matters to you.</h1>
+        <p class="screen-sub">Other insurers bundle maternity as a rider inside an ILP (Investment-Linked Plan). You end up tied to decades of premiums. Great Eastern is the only one that offers it standalone.</p>
+      </div>
+
+      <div class="vs-wrap">
+        <div class="vs-card">
+          <div class="vs-sub">Typical ILP + Maternity Rider</div>
+          <div class="vs-title" style="color: var(--ink-soft);">The Bundle Approach</div>
+          <ul class="vs-list bad">
+            <li>Must commit to 20–25 years of premiums</li>
+            <li>Maternity is a rider — tied to the main ILP</li>
+            <li>Investment risk: returns tied to market</li>
+            <li>Monthly premium burden during maternity leave</li>
+            <li>Surrender charges if you stop early</li>
+            <li>Complicated fees, bid-offer spreads</li>
+          </ul>
+        </div>
+        <div class="vs-divider serif">vs.</div>
+        <div class="vs-card winner">
+          <div class="vs-sub">GREAT Maternity Care 2</div>
+          <div class="vs-title" style="color: var(--ge-red);">The Clean Standalone</div>
+          <ul class="vs-list good">
+            <li><strong>One single premium</strong> — pay once, done</li>
+            <li>Pure protection, no investment complexity</li>
+            <li>Coverage ends naturally after baby's first year</li>
+            <li>No long-term lock-in or surrender fees</li>
+            <li>Award-winning: ParentsWorld 2024</li>
+            <li>Mum Again + GIB — protects next pregnancy too</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">What this means for your family</div>
+        <div class="grid-3">
+          <div class="sum-item">
+            <div class="sum-item-label">Total cost (Comprehensive)</div>
+            <div class="sum-item-value" id="compCostGE">S$860 once</div>
+          </div>
+          <div class="sum-item">
+            <div class="sum-item-label">Typical ILP over 20 yrs</div>
+            <div class="sum-item-value">S$60,000+</div>
+          </div>
+          <div class="sum-item">
+            <div class="sum-item-label">You save &amp; stay flexible</div>
+            <div class="sum-item-value" style="color: var(--ge-red);">Thousands</div>
+          </div>
+        </div>
+        <div class="hint mt-2">
+          💬 <strong>Talk track:</strong> "Other companies make you buy an ILP plan just to get maternity coverage as a rider. That's tying you to 20 years of market risk. Great Eastern lets you pay once, protect now, and keep your flexibility for the future — like baby's education plan."
+        </div>
+      </div>
+
+      <div class="nav-footer">
+        <button class="btn btn-ghost" onclick="goToStep(3)">← Back to plan</button>
+        <button class="btn btn-primary" onclick="goToStep(5)">Plan baby's education →</button>
+      </div>
+    </section>
+
+    <!-- ==================== STEP 5: EDUCATION CALC ==================== -->
+    <section class="screen" id="screen-5">
+      <div class="screen-header">
+        <span class="eyebrow">Step 5 · Education Goal</span>
+        <h1 class="screen-title">What will <em>uni</em> cost in 2044?</h1>
+        <p class="screen-sub">Hundreds of mummies we've walked with start here. A small monthly commitment today compounds into real choices for your child — local, overseas, MBA, whatever they dream of.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Tell us the vision</div>
+
+        <div class="edu-controls">
+          <div class="slider-field">
+            <label>
+              <span>University destination</span>
+              <span id="destLabel">Local (NUS/NTU/SMU)</span>
+            </label>
+            <select id="destination" onchange="calcEdu()" style="padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-family: 'Manrope', sans-serif; font-size: 15px;">
+              <option value="local" data-cost="40000">Local — Singapore (NUS/NTU/SMU)</option>
+              <option value="uk" data-cost="220000">Overseas — UK (Russell Group)</option>
+              <option value="us" data-cost="320000">Overseas — USA (Ivy / Top 30)</option>
+              <option value="aus" data-cost="180000">Overseas — Australia (Go8)</option>
+              <option value="mba" data-cost="400000">Post-grad — Overseas MBA</option>
+            </select>
+          </div>
+
+          <div class="slider-field">
+            <label>
+              <span>Years until uni</span>
+              <span id="yearsLabel">18 yrs</span>
+            </label>
+            <input type="range" id="years" min="1" max="22" value="18" oninput="calcEdu()">
+          </div>
+        </div>
+
+        <div class="slider-field" style="margin-bottom: 20px;">
+          <label>
+            <span>Inflation assumption (education)</span>
+            <span id="inflLabel">4.5%</span>
+          </label>
+          <input type="range" id="inflation" min="2" max="7" value="4.5" step="0.5" oninput="calcEdu()">
+        </div>
+
+        <div class="edu-result">
+          <div class="edu-label">Future cost at matriculation</div>
+          <div class="edu-amount">S$<span id="futCost">88,200</span></div>
+          <div class="edu-hint" id="eduHint">Today's S$40,000 compounded at 4.5% for 18 years.</div>
+        </div>
+
+        <div class="edu-breakdown">
+          <div class="edu-stat">
+            <div class="edu-stat-label">Monthly @ 3% (endowment)</div>
+            <div class="edu-stat-value" id="monthly3">S$318</div>
+          </div>
+          <div class="edu-stat">
+            <div class="edu-stat-label">Monthly @ 5% (balanced)</div>
+            <div class="edu-stat-value" id="monthly5">S$246</div>
+          </div>
+          <div class="edu-stat">
+            <div class="edu-stat-label">If you wait 5 years</div>
+            <div class="edu-stat-value" id="waitCost" style="color: var(--ge-red);">S$528/mo</div>
+          </div>
+        </div>
+
+        <div class="hint mt-2">
+          💬 <strong>Talk track:</strong> "Mummy, see this? Every year you wait, the monthly commitment gets steeper because compounding works against you. Starting now, at even $<span id="talkMonthly">246</span>/mo, baby gets to choose freely when the time comes. That's the real gift."
+        </div>
+      </div>
+
+      <div class="nav-footer">
+        <button class="btn btn-ghost" onclick="goToStep(4)">← Back</button>
+        <button class="btn btn-primary" onclick="goToStep(6)">Show closing scripts →</button>
+      </div>
+    </section>
+
+    <!-- ==================== STEP 6: SCRIPTS & OBJECTIONS ==================== -->
+    <section class="screen" id="screen-6">
+      <div class="screen-header">
+        <span class="eyebrow">Step 6 · Scripts &amp; Objection Handling</span>
+        <h1 class="screen-title">Close with <em>warmth</em>, not pressure.</h1>
+        <p class="screen-sub">Every script is MAS-compliant, empathetic, and tested. Tap a tab to switch between opening, objections, and the soft close.</p>
+      </div>
+
+      <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('opening')">🌸 Opening</button>
+        <button class="tab-btn" onclick="switchTab('discovery')">💬 Discovery</button>
+        <button class="tab-btn" onclick="switchTab('objection')">🛡️ Objections</button>
+        <button class="tab-btn" onclick="switchTab('close')">✨ Close</button>
+      </div>
+
+      <div class="card">
+        <!-- OPENING -->
+        <div class="script-pane active" id="pane-opening">
+          <div class="script-block">
+            <h5>Doorstep / First 60 seconds</h5>
+            <p>"Hi <em>Sarah</em>, I'm <em>Jason</em> from Great Eastern — registered with MAS, Rep No. <em>1220629</em>. Really happy to finally meet you! Congratulations again on the little one. Before I hand over the Supermom gift box, is now still a good time for a short 15-minute chat? If not, totally fine — we can reschedule."</p>
+          </div>
+          <div class="script-block">
+            <h5>Setting the frame (no-pressure)</h5>
+            <p>"I want to be upfront — I'm not here to sell you anything today. My job is to understand where you are in this journey and share what other mums in your shoes have done. If anything resonates, we continue. If not, you still keep the gift box and my number for later. Fair?"</p>
+          </div>
+          <div class="script-block">
+            <h5>Transition to discovery</h5>
+            <p>"Can I ask — is this your <em>first baby</em>? And are you more worried about the pregnancy itself, or about what happens after baby arrives?" <em>(Let her talk. Listen. Don't interrupt.)</em></p>
+          </div>
+        </div>
+
+        <!-- DISCOVERY -->
+        <div class="script-pane" id="pane-discovery">
+          <div class="script-block">
+            <h5>Open with empathy</h5>
+            <p>"Every mum I meet has a different story. Some are most scared about gestational diabetes because their sister had it. Some are stressed about how to pay if baby needs NICU. Some haven't slept thinking about <em>university fees</em>. What's been on your mind lately?"</p>
+          </div>
+          <div class="script-block">
+            <h5>Probing gently</h5>
+            <p>"When you say you're worried about <em>[her top concern]</em> — what does that look like for you day-to-day? Is it something you've thought about with your husband, or is it more on your heart alone?"</p>
+          </div>
+          <div class="script-block">
+            <h5>Anchoring on real stats</h5>
+            <p>"Did you know 1 in 5 pregnancies in Singapore has some complication? And about 7% of babies are born with a congenital condition. These aren't scare stats — they're real. Which is why we built GREAT Maternity Care 2 specifically for mums like you."</p>
+          </div>
+          <div class="script-block">
+            <h5>Bridge to solution</h5>
+            <p>"Based on what you've shared, I think there are <em>two</em> things worth looking at — protecting you and baby now during the pregnancy window, and starting a small education pot so you're not scrambling in 18 years. Shall I show you both?"</p>
+          </div>
+        </div>
+
+        <!-- OBJECTIONS -->
+        <div class="script-pane" id="pane-objection">
+
+          <details class="objection">
+            <summary>"I already have insurance from another company."</summary>
+            <div class="objection-body">
+              "That's great — you're already thinking ahead. Can I ask, is it an <strong>ILP with maternity rider</strong>, or a standalone maternity plan? Most SG insurers only offer it bundled inside a 20-year ILP. Great Eastern is the <strong>only one in Singapore</strong> offering standalone — one premium, done. Worth comparing side by side, no obligation."
+            </div>
+          </details>
+
+          <details class="objection">
+            <summary>"Let me discuss with my husband first."</summary>
+            <div class="objection-body">
+              "Absolutely, this is a family decision. Would it help if I prepared a one-page summary for you both to look at tonight? I can WhatsApp it over. Would <strong>tomorrow evening</strong> work for a quick follow-up — with him on the call if possible?"
+            </div>
+          </details>
+
+          <details class="objection">
+            <summary>"It sounds expensive right now — we're spending a lot on the baby."</summary>
+            <div class="objection-body">
+              "I hear you completely. A newborn already costs $10k in the first year. But here's the thing — the $5,000 Essential tier is a <strong>one-time $478</strong>. That's less than one month of infant care. And if something goes wrong medically, the payout is instant — no monthly premium burden during maternity leave. Would the Essential tier feel more manageable?"
+            </div>
+          </details>
+
+          <details class="objection">
+            <summary>"I'm healthy, I don't think I'll have complications."</summary>
+            <div class="objection-body">
+              "That's genuinely the best mindset. But let me share — <strong>1 in 5</strong> SG pregnancies do have a complication, and about <strong>7%</strong> of babies have a congenital condition. Most of those mums were healthy too. This plan isn't for the worst case — it's so you don't worry during the good case. Makes sense?"
+            </div>
+          </details>
+
+          <details class="objection">
+            <summary>"Can I buy later, after baby is born?"</summary>
+            <div class="objection-body">
+              "Unfortunately, no — GMC2 can only be bought <strong>during pregnancy</strong>, from week 13 to before delivery. That's a hard cut-off. The Guaranteed Insurability Benefit is actually a big reason mums sign up — it lets you buy baby's future CI/hospital plan <strong>within 90 days of birth without medical underwriting</strong>, even if baby is born with a condition. That's a one-time window you don't get later."
+            </div>
+          </details>
+
+          <details class="objection">
+            <summary>"My husband already has coverage through his employer."</summary>
+            <div class="objection-body">
+              "That's good baseline protection. But two things worth knowing — employer coverage usually ends the <strong>day he leaves that job</strong>, and the payout is typically only <strong>2–3× annual salary</strong>, which doesn't replace 20+ years of income needed to raise baby. A personal term life plan locks in coverage at today's age and health — and stays with him regardless of job changes. Shall I do a quick comparison?"
+            </div>
+          </details>
+
+          <details class="objection">
+            <summary>"Is Great Eastern reliable? What if the company collapses?"</summary>
+            <div class="objection-body">
+              "Great question. Great Eastern has been serving Singapore families <strong>since 1908</strong> — over 117 years. We're part of OCBC Group. Plus, your policy is <strong>protected up to specified limits by SDIC</strong> — the Singapore government's insurance scheme. It's as safe as it gets."
+            </div>
+          </details>
+
+          <details class="objection">
+            <summary>"What if I have a miscarriage — does the money get wasted?"</summary>
+            <div class="objection-body">
+              "I'm sorry you even have to think about that. In that very situation — if it's a miscarriage <strong>due to a life-threatening condition</strong> — GMC2 actually pays you the <strong>full sum assured</strong>, because it's one of the 18 covered complications. It's built exactly for these heartbreaking moments."
+            </div>
+          </details>
+
+          <details class="objection">
+            <summary>"Why should I trust you specifically?"</summary>
+            <div class="objection-body">
+              "Fair question. I'm <em>Jason Ng</em>, Rep No. <em>1220629</em> — you can verify me on the MAS Register of Representatives. I've walked with hundreds of mums through this. You can check my Google reviews or speak to any of my existing clients. And everything I recommend is documented — you always have it in writing."
+            </div>
+          </details>
+
+        </div>
+
+        <!-- CLOSE -->
+        <div class="script-pane" id="pane-close">
+          <div class="script-block">
+            <h5>Soft assumptive close</h5>
+            <p>"So based on what you've shared, what makes the most sense for your family is the <em>Comprehensive $10,000 tier</em> plus a small education savings plan starting at $<em>246</em>/month. The maternity is a one-time S$<em>860</em>. Shall I prepare the paperwork, or would you like to start with just the maternity piece today and we talk education next week?"</p>
+          </div>
+          <div class="script-block">
+            <h5>Choice close</h5>
+            <p>"Which tier feels right for you — the Essential at $478 one-time, or the Comprehensive at $860? There's no wrong answer, and Essential still covers everything we talked about, just at half the payout."</p>
+          </div>
+          <div class="script-block">
+            <h5>If she hesitates — the 24-hour frame</h5>
+            <p>"No rush at all. Let me send you the one-pager summary tonight. Can I follow up with you <em>tomorrow evening at 8pm</em>? If it's a yes, we do the paperwork online in 15 minutes. If it's a no, we stay friends and I still help you with any questions along the way. Deal?"</p>
+          </div>
+          <div class="script-block">
+            <h5>Post-sign warmth (this builds stickiness)</h5>
+            <p>"Sarah, thank you for trusting me with this. One thing I do for all my mum clients — I'll add you to my private WhatsApp list called <em>DPG Mummies Circle</em>. It's just me sharing useful stuff — paediatrician recs, MediSave hacks, CDA matching tips, baby jabs schedule. No selling. Sound good? Welcome to the family."</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-footer">
+        <button class="btn btn-ghost" onclick="goToStep(5)">← Back</button>
+        <button class="btn btn-primary" onclick="goToStep(7); generateSummary();">Generate leave-behind →</button>
+      </div>
+    </section>
+
+    <!-- ==================== STEP 7: SUMMARY / PRINT ==================== -->
+    <section class="screen" id="screen-7">
+      <div class="screen-header no-print">
+        <span class="eyebrow">Step 7 · Leave-Behind Summary</span>
+        <h1 class="screen-title">Your <em>personal</em> protection &amp; education plan.</h1>
+        <p class="screen-sub">One-page summary to print or WhatsApp. All the numbers we discussed, in one place.</p>
+      </div>
+
+      <div class="no-print" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Print / Save as PDF</button>
+        <button class="btn btn-navy" onclick="shareWhatsApp()">📱 Share via WhatsApp</button>
+        <button class="btn btn-ghost" onclick="goToStep(6)">← Back to scripts</button>
+      </div>
+
+      <div class="summary-wrap" id="summaryWrap">
+        <div class="summary-brand-row">
+          <img src="dp-logo-full.png" alt="Dream Planners" class="sum-dp-logo">
+          <div class="sum-brand-divider"></div>
+          <div class="sum-brand-text">
+            <div class="sum-brand-kicker">Distributed by</div>
+            <div class="sum-brand-ge">Great Eastern Life Assurance</div>
+          </div>
+        </div>
+
+        <div class="summary-header">
+          <div>
+            <h2>Plan for <span id="sumName">Sarah</span></h2>
+            <div style="font-size: 13px; color: var(--ink-soft); margin-top: 4px;">Prepared with care by your Dream Planners Financial Representative</div>
+          </div>
+          <div class="meta">
+            <div><strong>Date:</strong> <span id="sumDate"></span></div>
+            <div><strong>Due:</strong> <span id="sumDue">—</span></div>
+          </div>
+        </div>
+
+        <div class="sum-section">
+          <h3>Pillar 1 — Maternity Protection</h3>
+          <div class="sum-grid">
+            <div class="sum-item">
+              <div class="sum-item-label">Plan</div>
+              <div class="sum-item-value" id="sumPlan">GREAT Maternity Care 2</div>
+            </div>
+            <div class="sum-item">
+              <div class="sum-item-label">Tier</div>
+              <div class="sum-item-value" id="sumTier">Essential $5,000</div>
+            </div>
+            <div class="sum-item">
+              <div class="sum-item-label">Single Premium</div>
+              <div class="sum-item-value" id="sumPrem" style="color: var(--ge-red);">S$478 once</div>
+            </div>
+            <div class="sum-item">
+              <div class="sum-item-label">Coverage window</div>
+              <div class="sum-item-value">Now → 120 days post-birth</div>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 14px 18px; background: var(--cream); border-radius: 12px; font-size: 14px; line-height: 1.6;">
+            <strong style="color: var(--ge-red);">Covers:</strong> 18 pregnancy complications · 26 congenital illnesses · 15 juvenile illnesses · daily hospital care for mum &amp; baby · 3 psychological consultations · Mum Again &amp; Guaranteed Insurability benefits.
+          </div>
+        </div>
+
+        <div class="sum-section">
+          <h3>Pillar 2 — Baby's Education Fund</h3>
+          <div class="sum-grid">
+            <div class="sum-item">
+              <div class="sum-item-label">Goal</div>
+              <div class="sum-item-value" id="sumEduGoal">Local University</div>
+            </div>
+            <div class="sum-item">
+              <div class="sum-item-label">Future cost (18 yrs)</div>
+              <div class="sum-item-value" id="sumEduCost">S$88,200</div>
+            </div>
+            <div class="sum-item">
+              <div class="sum-item-label">Monthly commitment</div>
+              <div class="sum-item-value" id="sumEduMonthly" style="color: var(--ge-red);">S$246/mo</div>
+            </div>
+            <div class="sum-item">
+              <div class="sum-item-label">Delay cost (wait 5 yrs)</div>
+              <div class="sum-item-value" id="sumEduDelay">+S$282/mo extra</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sum-section" id="sumDadSection" style="display: none;">
+          <h3>Pillar 3 — Dad's Family Protection</h3>
+          <div class="sum-grid">
+            <div class="sum-item">
+              <div class="sum-item-label">Current gap level</div>
+              <div class="sum-item-value" id="sumDadGap">—</div>
+            </div>
+            <div class="sum-item" style="grid-column: span 2;">
+              <div class="sum-item-label">Next step</div>
+              <div class="sum-item-value" id="sumDadNext" style="font-size: 14px; line-height: 1.5;">—</div>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 14px 18px; background: var(--cream); border-radius: 12px; font-size: 13.5px; line-height: 1.6;">
+            <strong style="color: var(--ge-navy);">Why this matters:</strong> With a newborn, dad typically becomes the sole income pillar during maternity leave. The goal is simple — enough coverage so that if anything happens, the family's lifestyle and baby's future stay intact. GE offers term life, whole life &amp; CI plans tailored to young dads.
+          </div>
+        </div>
+
+        <div class="sum-section">
+          <h3>What makes GE different</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+            <div style="padding: 14px; background: var(--blush); border-radius: 12px; font-size: 13.5px; line-height: 1.55;"><strong style="color: var(--ge-red);">✓ Standalone maternity</strong> — Only GE offers this in Singapore. No ILP bundle needed.</div>
+            <div style="padding: 14px; background: var(--blush); border-radius: 12px; font-size: 13.5px; line-height: 1.55;"><strong style="color: var(--ge-red);">✓ Pay once</strong> — Single premium. No 20-year commitment.</div>
+            <div style="padding: 14px; background: var(--blush); border-radius: 12px; font-size: 13.5px; line-height: 1.55;"><strong style="color: var(--ge-red);">✓ 117 yrs trusted</strong> — Since 1908. Protected up to limits by SDIC.</div>
+            <div style="padding: 14px; background: var(--blush); border-radius: 12px; font-size: 13.5px; line-height: 1.55;"><strong style="color: var(--ge-red);">✓ Award-winning</strong> — ParentsWorld Best Comprehensive Maternity 2024.</div>
+          </div>
+        </div>
+
+        <div class="agent-card">
+          <div>
+            <h4 id="sumAgentName">Jason Ng</h4>
+            <p>Dream Planners Group</p>
+            <p style="font-size: 13px; opacity: 0.85;">Great Eastern Life / Financial Advisers</p>
+            <p style="margin-top: 8px;">Rep No. <span id="sumAgentRep">1220629</span> · Registered with MAS</p>
+            <p style="margin-top: 10px; font-size: 12px; opacity: 0.8;">Verify at mas.gov.sg → e-Services → Register of Representatives</p>
+          </div>
+          <div class="agent-qr" id="agentQR">QR / PURL</div>
+        </div>
+
+        <div style="margin-top: 24px; padding-top: 18px; border-top: 1px dashed var(--border); font-size: 11px; color: var(--ink-soft); line-height: 1.5;">
+          <strong>Disclaimer:</strong> This document is a conversation summary only. It is not a contract of insurance. Precise terms &amp; conditions are in the policy contract. Premium rates shown are for single foetus conceived naturally; 50% loading applies for twins or assisted conception. Protected up to specified limits by SDIC. Information correct as of plan brochure dated Aug 2025.
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // ============ STATE ============
+  const state = {
+    step: 1,
+    plan: '5k',
+    age: 28,
+    ivf: 'no',
+    twins: 'no',
+    concerns: {},
+    chips: {},
+    edu: { years: 18, inflation: 4.5, destination: 'local', baseCost: 40000 }
+  };
+
+  // ============ PREMIUM TABLE ============
+  const premTable = {
+    '5k':  { 28: 478, 33: 509, 37: 582, 42: 670 },
+    '10k': { 28: 860, 33: 916, 37: 1106, 42: 1273 }
+  };
+
+  function getPremium(tier, age, ivf, twins) {
+    let base = premTable[tier][age];
+    if (twins === 'yes') base *= 1.5;
+    if (ivf === 'yes') base *= 1.5;
+    return Math.round(base);
+  }
+
+  // ============ NAVIGATION ============
+  function goToStep(n) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById('screen-' + n);
+    if (target) target.classList.add('active');
+
+    // Progress step mapping — UI shows 6 steps but internally we have 7 screens (compare is step 4 UI-side)
+    const uiStepMap = { 1:1, 2:2, 3:3, 4:3, 5:4, 6:5, 7:6 };
+    const uiStep = uiStepMap[n] || n;
+
+    document.querySelectorAll('.step').forEach(s => {
+      const sn = parseInt(s.dataset.step);
+      s.classList.remove('active', 'done');
+      if (sn < uiStep) s.classList.add('done');
+      if (sn === uiStep) s.classList.add('active');
+    });
+
+    state.step = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    saveState();
+  }
+
+  // ============ CHIPS (single select) ============
+  document.querySelectorAll('.chip-group[data-single]').forEach(group => {
+    const key = group.dataset.single;
+    const scoreKey = group.dataset.score;
+    group.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+        state.chips[key] = chip.dataset.val;
+        if (key === 'ivf') { state.ivf = chip.dataset.val; updatePremium(); }
+        if (key === 'twins') { state.twins = chip.dataset.val; updatePremium(); }
+        if (scoreKey) {
+          state.dadScores = state.dadScores || {};
+          state.dadScores[scoreKey] = parseInt(chip.dataset.pts) || 0;
+          updateDadGap();
+        }
+        saveState();
+      });
+    });
+  });
+
+  // ============ DAD PROTECTION GAP METER ============
+  function updateDadGap() {
+    const s = state.dadScores || {};
+    const keys = ['runway', 'life', 'ci', 'debt'];
+    const answered = keys.filter(k => k in s).length;
+    if (answered === 0) return;
+
+    const total = keys.reduce((sum, k) => sum + (s[k] || 0), 0);
+    // Max possible = 3+3+3+3 = 12
+    const pct = Math.round((total / 12) * 100);
+
+    const fill = document.getElementById('gapFill');
+    const scoreEl = document.getElementById('gapScore');
+    const verdictEl = document.getElementById('gapVerdict');
+
+    if (!fill) return;
+    fill.style.width = pct + '%';
+
+    let label, verdict, cls;
+    if (pct <= 25) {
+      label = 'Low · ' + pct + '%';
+      cls = 'good';
+      scoreEl.style.color = '#2D6B4E';
+      verdict = `<strong>Well protected.</strong> Dad's foundations look solid. Worth a 15-min policy review to confirm coverage levels match your post-baby lifestyle.`;
+    } else if (pct <= 55) {
+      label = 'Moderate · ' + pct + '%';
+      cls = 'warn';
+      scoreEl.style.color = '#A05A2C';
+      verdict = `<strong>Moderate gap.</strong> Some protection is in place but with a baby on the way, we should shore up the weak spots — especially CI and mortgage cover.`;
+    } else {
+      label = 'High · ' + pct + '%';
+      cls = 'risk';
+      scoreEl.style.color = 'var(--ge-red)';
+      verdict = `<strong>Significant gap.</strong> If anything happens to dad today, the family would be financially exposed within months. This is fixable — and usually more affordable than mums expect. Let's talk about term life + CI.`;
+    }
+
+    scoreEl.textContent = label;
+    verdictEl.className = 'gap-verdict show ' + cls;
+    verdictEl.innerHTML = verdict;
+
+    // Store for summary
+    state.dadGap = { pct: pct, label: label, verdict: verdict };
+  }
+
+  // ============ SCALE (1-5 concern rating) ============
+  document.querySelectorAll('.scale').forEach(scale => {
+    for (let i = 1; i <= 5; i++) {
+      const b = document.createElement('button');
+      b.textContent = i;
+      b.dataset.val = i;
+      b.addEventListener('click', () => {
+        scale.querySelectorAll('button').forEach(btn => btn.classList.remove('picked'));
+        b.classList.add('picked');
+        state.concerns[scale.dataset.concern] = i;
+        saveState();
+      });
+      scale.appendChild(b);
+    }
+  });
+
+  // ============ PLAN SELECTION ============
+  function selectPlan(tier) {
+    state.plan = tier;
+    document.querySelectorAll('.plan-card').forEach(p => p.classList.remove('active'));
+    document.getElementById('plan-' + tier).classList.add('active');
+
+    const sa = tier === '5k' ? 5000 : 10000;
+    const halfSA = sa / 2;
+    const daily = tier === '5k' ? 100 : 200;
+
+    document.getElementById('b-tpd').textContent = '$' + sa.toLocaleString();
+    document.getElementById('b-preg').textContent = '$' + sa.toLocaleString();
+    document.getElementById('b-hosp-m').textContent = '$' + daily + '/day';
+    document.getElementById('b-death-c').textContent = '$' + sa.toLocaleString();
+    document.getElementById('b-cong').textContent = '$' + sa.toLocaleString();
+    document.getElementById('b-juv').textContent = '$' + sa.toLocaleString();
+    document.getElementById('b-hosp-c').textContent = '$' + daily + '/day';
+    document.getElementById('b-organ').textContent = '$' + halfSA.toLocaleString();
+
+    updatePremium();
+    saveState();
+  }
+
+  function updatePremium() {
+    const ageSelect = document.getElementById('mumAge');
+    if (ageSelect) state.age = parseInt(ageSelect.value);
+
+    const p5 = getPremium('5k', state.age, state.ivf, state.twins);
+    const p10 = getPremium('10k', state.age, state.ivf, state.twins);
+
+    const suffix = (state.ivf === 'yes' || state.twins === 'yes') ? ' *' : '';
+    document.getElementById('prem5k').textContent = 'S$' + p5 + suffix;
+    document.getElementById('prem10k').textContent = 'S$' + p10 + suffix;
+
+    const currentPrem = state.plan === '5k' ? p5 : p10;
+    document.getElementById('premTalk').textContent = currentPrem;
+    document.getElementById('compCostGE').textContent = 'S$' + p10 + ' once';
+  }
+
+  // ============ EDUCATION CALC ============
+  function calcEdu() {
+    const yearsEl = document.getElementById('years');
+    const inflEl = document.getElementById('inflation');
+    const destEl = document.getElementById('destination');
+
+    const years = parseInt(yearsEl.value);
+    const infl = parseFloat(inflEl.value);
+    const baseCost = parseInt(destEl.options[destEl.selectedIndex].dataset.cost);
+    const destLabel = destEl.options[destEl.selectedIndex].text.split(' — ')[1] || destEl.options[destEl.selectedIndex].text;
+
+    state.edu.years = years;
+    state.edu.inflation = infl;
+    state.edu.destination = destEl.value;
+    state.edu.baseCost = baseCost;
+
+    document.getElementById('yearsLabel').textContent = years + ' yrs';
+    document.getElementById('inflLabel').textContent = infl + '%';
+    document.getElementById('destLabel').textContent = destLabel;
+
+    // Future cost = base * (1+i)^years
+    const futureCost = baseCost * Math.pow(1 + infl/100, years);
+    document.getElementById('futCost').textContent = Math.round(futureCost).toLocaleString();
+    document.getElementById('eduHint').textContent = `Today's S$${baseCost.toLocaleString()} compounded at ${infl}% for ${years} years.`;
+
+    // Monthly savings needed (future value of annuity)
+    // PMT = FV * r / ((1+r)^n - 1)
+    const monthly3 = calcMonthly(futureCost, 3, years);
+    const monthly5 = calcMonthly(futureCost, 5, years);
+
+    document.getElementById('monthly3').textContent = 'S$' + Math.round(monthly3).toLocaleString();
+    document.getElementById('monthly5').textContent = 'S$' + Math.round(monthly5).toLocaleString();
+    document.getElementById('talkMonthly').textContent = Math.round(monthly5).toLocaleString();
+
+    // If wait 5 years — same future cost but n-5 years
+    const waitYears = Math.max(1, years - 5);
+    const monthlyWait = calcMonthly(futureCost, 5, waitYears);
+    document.getElementById('waitCost').textContent = 'S$' + Math.round(monthlyWait).toLocaleString() + '/mo';
+
+    state.edu.futureCost = Math.round(futureCost);
+    state.edu.monthly5 = Math.round(monthly5);
+    state.edu.waitDelta = Math.round(monthlyWait - monthly5);
+    saveState();
+  }
+
+  function calcMonthly(fv, ratePct, years) {
+    const r = ratePct/100/12;
+    const n = years * 12;
+    if (r === 0) return fv / n;
+    return fv * r / (Math.pow(1+r, n) - 1);
+  }
+
+  // ============ TABS ============
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelectorAll('.script-pane').forEach(p => p.classList.remove('active'));
+    document.getElementById('pane-' + tab).classList.add('active');
+  }
+
+  // ============ SUMMARY GENERATION ============
+  function generateSummary() {
+    const mumName = document.getElementById('mumName').value || 'you';
+    const agentName = document.getElementById('agentName').value || 'Your Representative';
+    const agentRep = document.getElementById('agentRep').value || 'xxxxxx';
+    const dueDate = document.getElementById('dueDate').value;
+
+    document.getElementById('sumName').textContent = mumName.split(' ')[0] || 'you';
+    document.getElementById('sumAgentName').textContent = agentName;
+    document.getElementById('sumAgentRep').textContent = agentRep;
+
+    const today = new Date();
+    document.getElementById('sumDate').textContent = today.toLocaleDateString('en-SG', { day: 'numeric', month: 'short', year: 'numeric' });
+
+    if (dueDate) {
+      const d = new Date(dueDate);
+      document.getElementById('sumDue').textContent = d.toLocaleDateString('en-SG', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    // Plan summary
+    const tierLabel = state.plan === '5k' ? 'Essential $5,000' : 'Comprehensive $10,000';
+    const premium = getPremium(state.plan, state.age, state.ivf, state.twins);
+    document.getElementById('sumTier').textContent = tierLabel;
+    document.getElementById('sumPrem').textContent = 'S$' + premium + ' once';
+
+    // Education
+    const destEl = document.getElementById('destination');
+    const destText = destEl.options[destEl.selectedIndex].text.split(' — ')[1] || 'Local University';
+    document.getElementById('sumEduGoal').textContent = destText;
+    document.getElementById('sumEduCost').textContent = 'S$' + state.edu.futureCost.toLocaleString();
+    document.getElementById('sumEduMonthly').textContent = 'S$' + state.edu.monthly5.toLocaleString() + '/mo';
+    document.getElementById('sumEduDelay').textContent = '+S$' + state.edu.waitDelta.toLocaleString() + '/mo extra';
+
+    // Dad pillar (only show if at least one question answered)
+    const dadSec = document.getElementById('sumDadSection');
+    if (state.dadGap && state.dadGap.pct !== undefined) {
+      dadSec.style.display = 'block';
+      document.getElementById('sumDadGap').textContent = state.dadGap.label;
+      const pct = state.dadGap.pct;
+      let next;
+      if (pct <= 25) {
+        next = '15-min policy review to confirm coverage matches your post-baby lifestyle.';
+      } else if (pct <= 55) {
+        next = 'Shore up CI + mortgage cover. Explore GREAT TotalCare for income protection.';
+      } else {
+        next = 'Urgent: Term Life (10× income) + CI plan. Affordable if dad is young & healthy — usually under S$150/mo.';
+      }
+      document.getElementById('sumDadNext').textContent = next;
+    } else {
+      dadSec.style.display = 'none';
+    }
+  }
+
+  function shareWhatsApp() {
+    const mumName = document.getElementById('mumName').value || 'Mummy';
+    const agentName = document.getElementById('agentName').value || 'your rep';
+    const premium = getPremium(state.plan, state.age, state.ivf, state.twins);
+    const tierLabel = state.plan === '5k' ? 'Essential $5,000' : 'Comprehensive $10,000';
+
+    let msg = `Hi ${mumName}, thank you for the lovely chat today! 🌸 Here's our summary:\n\n` +
+              `🛡️ *GREAT Maternity Care 2 — ${tierLabel}*\nSingle premium: S$${premium} (one-time)\nCovers 44 events for you + baby, through 120 days post-birth.\n\n` +
+              `🎓 *Baby's education goal*\nFuture cost: S$${state.edu.futureCost.toLocaleString()}\nStart from just S$${state.edu.monthly5}/month\n\n`;
+
+    if (state.dadGap && state.dadGap.pct !== undefined) {
+      msg += `👨‍👧 *Dad's family protection*\nCurrent gap: ${state.dadGap.label}\n`;
+      if (state.dadGap.pct > 55) {
+        msg += `Recommend: Term Life + CI review — usually under S$150/mo for young dads.\n\n`;
+      } else if (state.dadGap.pct > 25) {
+        msg += `Recommend: Top up CI + mortgage cover.\n\n`;
+      } else {
+        msg += `Looking solid! Quick review to confirm levels.\n\n`;
+      }
+    }
+
+    msg += `Let me know anytime if you'd like to proceed or have more questions. No rush! ❤️\n\n${agentName}\nGreat Eastern Life`;
+
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  // ============ PERSIST ============
+  function saveState() {
+    try {
+      const data = {
+        mumName: document.getElementById('mumName')?.value || '',
+        dueDate: document.getElementById('dueDate')?.value || '',
+        agentName: document.getElementById('agentName')?.value || '',
+        agentRep: document.getElementById('agentRep')?.value || '',
+        state: state
+      };
+      // Note: in Claude artifact env, localStorage may not persist — keeping in-memory only
+      window._dpgState = data;
+    } catch(e) {}
+  }
+
+  function resetApp() {
+    if (confirm('Start a new meeting? This clears all data.')) {
+      location.reload();
+    }
+  }
+
+  // ============ INIT ============
+  document.addEventListener('DOMContentLoaded', () => {
+    selectPlan('5k');
+    calcEdu();
+    updatePremium();
+
+    // Default chip selections
+    document.querySelectorAll('.chip-group[data-single="ivf"] .chip[data-val="no"]').forEach(c => c.click());
+    document.querySelectorAll('.chip-group[data-single="twins"] .chip[data-val="no"]').forEach(c => c.click());
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "Dream Planners — Mum Engagement Tool",
+  "short_name": "DP Mum",
+  "description": "Dream Planners Group × Great Eastern — agent engagement tool for Supermom leads",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#1E3DAF",
+  "background_color": "#FDFBF7",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
