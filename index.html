@@ -2115,6 +2115,30 @@
 
   // ============ INIT ============
   document.addEventListener('DOMContentLoaded', () => {
+    // Auto-fill agent info from Sales Tracker URL params
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const rep = params.get('rep');
+      const name = params.get('name');
+      const ref = params.get('ref');
+      const returnUrl = params.get('returnUrl');
+      if (rep || name) {
+        const apply = () => {
+          if (name) { const el = document.getElementById('agentName'); if (el) el.value = name; }
+          if (rep)  { const el = document.getElementById('agentRep');  if (el) el.value = rep; }
+          if (typeof saveState === 'function') saveState();
+          if (ref === 'tracker') {
+            const bar = document.createElement('div');
+            bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#1e3a5f;color:white;font-size:13px;padding:8px 16px;display:flex;align-items:center;gap:8px;';
+            bar.innerHTML = '<a href="' + (returnUrl || '#') + '" style="color:#93c5fd;text-decoration:none;font-weight:600;">← Sales Tracker</a><span style="opacity:0.5;">|</span><span>Signed in as ' + (name || '') + ' · Rep ' + (rep || '') + '</span>';
+            document.body.prepend(bar);
+            document.body.style.paddingTop = '36px';
+          }
+        };
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
+        else apply();
+      }
+    })();
     selectPlan('5k');
     calcEdu();
     updatePremium();
@@ -2123,7 +2147,7 @@
     document.querySelectorAll('.chip-group[data-single="ivf"] .chip[data-val="no"]').forEach(c => c.click());
     document.querySelectorAll('.chip-group[data-single="twins"] .chip[data-val="no"]').forEach(c => c.click());
   });
-</script>
+  </script>
 
 </body>
 </html>
