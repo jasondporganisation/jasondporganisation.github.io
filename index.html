@@ -997,13 +997,33 @@
 
   /* ========== PRINT ========== */
   @media print {
-    body { background: white; }
+    @page { size: A4 portrait; margin: 8mm; }
+    html, body { background: white; }
+    body { font-size: 12px; }
     .topbar, .progress-wrap, .nav-footer, .no-print { display: none !important; }
     main { padding: 0; max-width: none; }
-    .summary-wrap { box-shadow: none; padding: 0; }
-    .screen { display: block !important; page-break-inside: avoid; }
+    .screen { display: block !important; page-break-inside: avoid; break-inside: avoid; }
     .screen:not(#screen-7) { display: none !important; }
-    .agent-card { background: var(--ge-red) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    #screen-7, #screen-7 .summary-wrap { page-break-inside: avoid; break-inside: avoid; }
+    .summary-wrap { box-shadow: none; padding: 0; border-radius: 0; }
+    .summary-brand-row { padding-bottom: 8px; margin-bottom: 8px; gap: 10px; }
+    .sum-dp-logo { max-height: 32px !important; }
+    .sum-brand-divider { height: 24px !important; }
+    .sum-brand-kicker { font-size: 9px !important; }
+    .sum-brand-ge { font-size: 12px !important; }
+    .summary-header { padding-bottom: 8px; margin-bottom: 10px; border-bottom-width: 2px; }
+    .summary-header h2 { font-size: 18px; }
+    .summary-header .meta { font-size: 10px; }
+    .sum-section { margin-bottom: 8px; page-break-inside: avoid; break-inside: avoid; }
+    .sum-section h3 { font-size: 12px; margin-bottom: 4px; }
+    .sum-grid { gap: 6px; }
+    .sum-item { padding: 6px 10px; border-radius: 8px; }
+    .sum-item-label { font-size: 8px; margin-bottom: 2px; }
+    .sum-item-value { font-size: 12px; }
+    .agent-card { background: var(--ge-red) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 10px 14px; border-radius: 10px; }
+    .agent-card h4 { font-size: 14px; margin-bottom: 2px; }
+    .agent-card p { font-size: 10px; }
+    .agent-qr { width: 50px !important; height: 50px !important; }
     .sum-item { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 
